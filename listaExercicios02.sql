@@ -163,4 +163,23 @@ SELECT @autorMaisAntigo AS 'Autor Mais Antigo';
 CALL sp_AdicionarLivro('Novo Livro', 1, 2023, 250, 2, @mensagem);
 SELECT @mensagem AS 'Mensagem';
 
+9. *Documentação e Comentários*:
+
+Você pode adicionar comentários detalhados a qualquer uma das stored procedures acima, seguindo as práticas de comentários SQL. Por exemplo:
+
+sql
+-- Descrição da stored procedure
+-- Autor: Seu Nome
+-- Data: Data de Criação
+-- Descrição: Esta stored procedure faz o seguinte...
+
+DELIMITER //
+
+CREATE PROCEDURE sp_SuaProcedure(IN parametro1 TIPO, OUT parametro2 TIPO)
+BEGIN
+
+END //
+
+DELIMITER ;
+
 
