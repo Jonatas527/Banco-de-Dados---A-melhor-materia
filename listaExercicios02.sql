@@ -90,4 +90,36 @@ DELIMITER ;
 
 CALL sp_LivrosAteAno(2010);
 
+6. *Extração de Títulos por Categoria (Usando Cursor)*:
+
+sql
+DELIMITER //
+
+CREATE PROCEDURE sp_TitulosPorCategoria(IN categoriaNome VARCHAR(100))
+BEGIN
+    DECLARE done INT DEFAULT FALSE;
+    DECLARE livroTitulo VARCHAR(255);
+    DECLARE cur CURSOR FOR
+        SELECT Livro.Titulo
+        FROM Livro
+        INNER JOIN Categoria ON Livro.Categoria_ID = Categoria.Categoria_ID
+        WHERE Categoria.Nome = categoriaNome;
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+
+    OPEN cur;
+    read_loop: LOOP
+        FETCH cur INTO livroTitulo;
+        IF done THEN
+            LEAVE read_loop;
+        END IF;
+        SELECT livroTitulo;
+    END LOOP;
+    CLOSE cur;
+END //
+
+DELIMITER ;
+
+-- Teste da stored procedure
+CALL sp_TitulosPorCategoria('Ficção Científica');
+
 
