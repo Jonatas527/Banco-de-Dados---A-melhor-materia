@@ -122,4 +122,28 @@ DELIMITER ;
 -- Teste da stored procedure
 CALL sp_TitulosPorCategoria('Ficção Científica');
 
+7. *Adição de Livro com Tratamento de Erros*:
+
+sql
+DELIMITER //
+
+CREATE PROCEDURE sp_AdicionarLivro(IN titulo VARCHAR(255), IN editoraID INT, IN anoPublicacao INT, IN numPaginas INT, IN categoriaID INT, OUT mensagem VARCHAR(255))
+BEGIN
+    DECLARE EXIT HANDLER FOR 1062
+    BEGIN
+        SET mensagem = 'Erro: Título de livro já existe.';
+    END;
+
+    INSERT INTO Livro (Titulo, Editora_ID, Ano_Publicacao, Numero_Paginas, Categoria_ID)
+    VALUES (titulo, editoraID, anoPublicacao, numPaginas, categoriaID);
+
+    SET mensagem = 'Livro adicionado com sucesso.';
+END //
+
+DELIMITER ;
+
+-- Teste da stored procedure
+CALL sp_AdicionarLivro('Novo Livro', 1, 2023, 250, 2, @mensagem);
+SELECT @mensagem AS 'Mensagem';
+
 
