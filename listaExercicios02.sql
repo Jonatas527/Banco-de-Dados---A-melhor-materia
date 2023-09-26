@@ -142,7 +142,24 @@ END //
 
 DELIMITER ;
 
--- Teste da stored procedure
+
+8. *Autor Mais Antigo*:
+
+sql
+DELIMITER //
+
+CREATE PROCEDURE sp_AutorMaisAntigo(OUT autorMaisAntigo VARCHAR(255))
+BEGIN
+    SELECT CONCAT(Nome, ' ', Sobrenome) INTO autorMaisAntigo
+    FROM Autor
+    WHERE Data_Nascimento = (SELECT MIN(Data_Nascimento) FROM Autor);
+END //
+
+DELIMITER ;
+
+CALL sp_AutorMaisAntigo(@autorMaisAntigo);
+SELECT @autorMaisAntigo AS 'Autor Mais Antigo';
+
 CALL sp_AdicionarLivro('Novo Livro', 1, 2023, 250, 2, @mensagem);
 SELECT @mensagem AS 'Mensagem';
 
